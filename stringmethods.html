@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Color Boxes UI</title>
+<style>
+  :root{
+    --gap: 18px;
+    --radius: 12px;
+    --btn-radius: 10px;
+    --box-size: 160px;
+    --small-size: 28px;
+    font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  body{
+    margin: 32px;
+    color: #1f2937;
+    background: #fff;
+  }
+
+  .header {
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom: 8px;
+  }
+  .title {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:28px;
+    font-weight:700;
+  }
+
+  .links {
+    margin: 8px 0 22px 0;
+    font-size:15px;
+  }
+  .links a{
+    color:#0f5132;
+    text-decoration:none;
+    margin-right:10px;
+  }
+
+  /* Color buttons row */
+  .controls {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom: 32px;
+  }
+
+  .color-btn {
+    padding: 14px 26px;
+    border-radius: var(--btn-radius);
+    border: none;
+    color: white;
+    font-weight:700;
+    font-size:18px;
+    cursor:pointer;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .color-btn:active { transform: translateY(1px); }
+
+  .color-red{ background:#e06b6b; }
+  .color-green{ background:#4aa36a; }
+  .color-blue{ background:#5fc0ff; color:#07304a; }
+  .color-yellow{ background:#f1c96c; color:#1f2a2b; }
+  .color-pink{ background:#efd7ef; color:#4b3b4b; }
+  .color-clear{ background:#eef2f7; color:#0f1724; box-shadow:none; }
+
+  .small-swatch {
+    width: var(--small-size);
+    height: var(--small-size);
+    border-radius:6px;
+    display:inline-block;
+    margin-right:8px;
+    vertical-align:middle;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  .controls .clear-all {
+    margin-left: 8px;
+    padding:10px 14px;
+    border-radius:8px;
+    border:1px solid rgba(0,0,0,0.06);
+    background:#fff;
+    cursor:pointer;
+  }
+
+  /* Boxes area */
+  .boxes-heading {
+    font-size:22px;
+    font-weight:700;
+    margin: 24px 0 18px;
+  }
+
+  .boxes-area {
+    display:flex;
+    gap:28px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+
+  .box {
+    width: var(--box-size);
+    height: var(--box-size);
+    border-radius: 14px;
+    position:relative;
+    box-shadow: 0 20px 28px rgba(10,10,10,0.06);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    color: #fff;
+  }
+
+  .box .close {
+    position:absolute;
+    top:10px;
+    right:12px;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color: rgba(255,255,255,0.9);
+    font-weight:700;
+    background: rgba(255,255,255,0.16);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  }
+  .box .close:hover { transform: scale(1.06); }
+
+  /* color backgrounds */
+  .box.red{ background: linear-gradient(180deg,#e27b7b,#d85f66); }
+  .box.green{ background: linear-gradient(180deg,#66c17a,#3f9754); color:white; }
+  .box.blue{ background: linear-gradient(180deg,#8fd6ff,#56b6df); color:#07304a; }
+  .box.yellow{ background: linear-gradient(180deg,#f7db99,#e3c06a); color:#2b2b20; }
+  .box.pink{ background: linear-gradient(180deg,#f3d5e9,#e5bcd6); color:#3b2b3b; }
+  .box.black{ background: linear-gradient(180deg,#2b2b2b,#111); color:white; }
+
+  /* Responsive */
+  @media (max-width:700px){
+    :root{ --box-size: 120px; }
+    .color-btn{ padding:10px 16px; font-size:16px; }
+  }
+
+  /* helper text */
+  .helper {
+    margin: 8px 0 16px;
+    color:#375056;
+    font-size:14px;
+  }
+
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="title">🖥️ What UI looks like</div>
+  </div>
+
+  <div class="links">
+    [ <a href="#" data-swatch="red">Red</a> ] 
+    [ <a href="#" data-swatch="green">Green</a> ] 
+    [ <a href="#" data-swatch="blue">Blue</a> ] 
+    [ <a href="#" data-swatch="yellow">Yellow</a> ] 
+    [ <a href="#" data-swatch="pink">Pink</a> ] 
+    [ <a href="#" data-swatch="black">Black</a> ] 
+    [ <a href="#" id="clear-links">Clear All</a> ]
+  </div>
+
+  <div class="helper"><strong>Boxes Area:</strong> <span style="display:inline-block; vertical-align:middle; margin-left:8px">
+    <span class="small-swatch" style="background:#111"></span>
+    <span class="small-swatch" style="background:#5fc0ff"></span>
+    <span class="small-swatch" style="background:#e06b6b"></span>
+    <span class="small-swatch" style="background:#f1c96c"></span>
+    <span style="margin-left:10px; color:#a33">✖ for each box</span>
+  </span></div>
+
+  <div class="controls" id="controls">
+    <button class="color-btn color-red" data-color="red">Red</button>
+    <button class="color-btn color-green" data-color="green">Green</button>
+    <button class="color-btn color-blue" data-color="blue">Blue</button>
+    <button class="color-btn color-yellow" data-color="yellow">Yellow</button>
+    <button class="color-btn color-pink" data-color="pink">Pink</button>
+    <button class="color-btn color-clear" id="clearAllBtn">Clear All</button>
+  </div>
+
+  <div class="boxes-heading">Boxes Area:</div>
+  <div class="boxes-area" id="boxesArea" aria-live="polite">
+    <!-- starting boxes like the image -->
+    <div class="box red" data-id="">
+      <div class="close" title="Remove">×</div>
+    </div>
+    <div class="box blue" data-id="">
+      <div class="close" title="Remove">×</div>
+    </div>
+    <div class="box yellow" data-id="">
+      <div class="close" title="Remove">×</div>
+    </div>
+  </div>
+
+<script>
+  // color map to class names (and optional label)
+  const colorMap = {
+    red: { cls: 'red' },
+    green: { cls: 'green' },
+    blue: { cls: 'blue' },
+    yellow: { cls: 'yellow' },
+    pink: { cls: 'pink' },
+    black: { cls: 'black' }
+  };
+
+  const boxesArea = document.getElementById('boxesArea');
+  const controls = document.getElementById('controls');
+
+  // helper to create a box element
+  function createBox(colorKey){
+    const data = colorMap[colorKey];
+    if(!data) return null;
+
+    const box = document.createElement('div');
+    box.className = 'box ' + data.cls;
+    box.setAttribute('data-color', colorKey);
+
+    // close button
+    const close = document.createElement('div');
+    close.className = 'close';
+    close.setAttribute('role','button');
+    close.setAttribute('aria-label','Remove box');
+    close.title = 'Remove';
+    close.textContent = '×';
+    box.appendChild(close);
+
+    return box;
+  }
+
+  // Add box on color button click
+  controls.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-color]');
+    if(!btn) return;
+    const color = btn.getAttribute('data-color');
+    const box = createBox(color);
+    if(box) boxesArea.appendChild(box);
+  });
+
+  // Delegated remove (clicking the × removes the box)
+  boxesArea.addEventListener('click', (e) => {
+    const close = e.target.closest('.close');
+    if(!close) return;
+    const box = close.closest('.box');
+    if(box){
+      box.remove();
+    }
+  });
+
+  // Clear all buttons (both top and bottom)
+  document.getElementById('clearAllBtn').addEventListener('click', clearAllBoxes);
+  document.getElementById('clear-links').addEventListener('click', (ev)=>{
+    ev.preventDefault(); clearAllBoxes();
+  });
+
+  function clearAllBoxes(){
+    // remove all children
+    boxesArea.innerHTML = '';
+  }
+
+  // small links near top: clicking creates that color box
+  document.querySelectorAll('.links a[data-swatch]').forEach(a => {
+    a.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      const c = a.getAttribute('data-swatch');
+      const box = createBox(c);
+      if(box) boxesArea.appendChild(box);
+    });
+  });
+
+  // keyboard support: press R/G/B/Y/P add boxes
+  document.addEventListener('keydown', (e) => {
+    const key = e.key.toLowerCase();
+    if(key === 'r') boxesArea.appendChild(createBox('red'));
+    if(key === 'g') boxesArea.appendChild(createBox('green'));
+    if(key === 'b') boxesArea.appendChild(createBox('blue'));
+    if(key === 'y') boxesArea.appendChild(createBox('yellow'));
+    if(key === 'p') boxesArea.appendChild(createBox('pink'));
+    if(key === 'c') clearAllBoxes();
+  });
+
+  // make existing starting boxes' close buttons functional:
+  document.querySelectorAll('.box .close').forEach(c => {
+    c.addEventListener('click', () => c.closest('.box').remove());
+  });
+</script>
+</body>
+</html>
