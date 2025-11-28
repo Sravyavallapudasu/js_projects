@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Snake & Ladder</title>
+
+    <style>
+        body { text-align: center; font-family: Arial; }
+        #board { 
+            width: 300px; 
+            height: 300px; 
+            display: grid; 
+            grid-template-columns: repeat(10, 1fr); 
+            margin: 20px auto; 
+            border: 3px solid black;
+        }
+        .cell { 
+            border: 1px solid #aaa; 
+            font-size: 10px; 
+            position: relative; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+        }
+        #player {
+            width: 15px; height: 15px;
+            background: red; border-radius: 50%;
+            position: absolute;
+        }
+        button {
+            padding: 10px 20px; 
+            font-size: 18px; 
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Snake & Ladder (Simple Version)</h2>
+
+<div id="board"></div>
+
+<button onclick="rollDice()">🎲 Roll Dice</button>
+<p id="msg">Position: 1</p>
+
+<script>
+    let playerPos = 1;
+
+    const snakes = { 17: 7, 54: 34, 62: 19, 98: 79 };
+    const ladders = { 3: 22, 5: 8, 20: 38, 28: 84 };
+
+    // Create board
+    const board = document.getElementById("board");
+    for (let i = 100; i >= 1; i--) {
+        let cell = document.createElement("div");
+        cell.className = "cell";
+        cell.id = "cell-" + i;
+        cell.innerHTML = i;
+        board.appendChild(cell);
+    }
+
+    // Player token
+    let player = document.createElement("div");
+    player.id = "player";
+    document.getElementById("cell-1").appendChild(player);
+
+    function rollDice() {
+        let dice = Math.floor(Math.random() * 6) + 1;
+        let next = playerPos + dice;
+
+        if (next > 100) return;
+
+        playerPos = next;
+
+        // Ladder
+        if (ladders[playerPos]) {
+            alert("You got a ladder!");
+            playerPos = ladders[playerPos];
+        }
+
+        // Snake
+        if (snakes[playerPos]) {
+            alert("Oops! Snake bite!");
+            playerPos = snakes[playerPos];
+        }
+
+        // Move player
+        document.getElementById("cell-" + playerPos).appendChild(player);
+
+        document.getElementById("msg").innerText = "Position: " + playerPos;
+
+        if (playerPos === 100)
+            alert("🎉 You Win!");
+    }
+</script>
+
+</body>
+</html>
