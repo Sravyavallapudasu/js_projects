@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Student Score Manager</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+    .input-group {
+      margin-bottom: 10px;
+    }
+    label {
+      display: inline-block;
+      width: 120px;
+    }
+    input {
+      padding: 5px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 5px 10px;
+      margin-right: 5px;
+    }
+    #output {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      min-height: 50px;
+    }
+    .student-item {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Student Score Manager</h1>
+
+  <div class="input-group">
+    <label for="studentName">Student Name:</label>
+    <input type="text" id="studentName" placeholder="Enter name..." />
+  </div>
+
+  <div class="input-group">
+    <label for="studentScore">Score:</label>
+    <input type="number" id="studentScore" placeholder="Enter score..." />
+  </div>
+
+  <button id="saveBtn">Save Score</button>
+  <button id="showAllBtn">Show All</button>
+  <button id="showPassedBtn">Show Passed</button>
+  <button id="sortBtn">Sort by Score</button>
+  <button id="clearBtn">Clear All</button>
+
+  <div id="output"></div>
+
+  <script>
+    const studentNameInput = document.getElementById('studentName');
+    const studentScoreInput = document.getElementById('studentScore');
+    const saveBtn = document.getElementById('saveBtn');
+    const showAllBtn = document.getElementById('showAllBtn');
+    const showPassedBtn = document.getElementById('showPassedBtn');
+    const sortBtn = document.getElementById('sortBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const outputDiv = document.getElementById('output');
+
+    const STORAGE_KEY = 'students';
+
+    // Get students array from localStorage (or empty array if none)
+    function getStudents() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch (e) {
+          console.error('Error parsing localStorage data', e);
+          return [];
+        }
+      }
+      return [];
+    }
+
+    // Save students array to localStorage
+    function saveStudents(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    // Render given array of student objects to outputDiv
+    function renderStudents(arr) {
+      outputDiv.innerHTML = '';
+      if (!arr.length) {
+        outputDiv.innerHTML = '<em>No students to display</em>';
+        return;
+      }
+      arr.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'student-item';
+        div.innerText = `Name: ${s.name}, Score: ${s.score}`;
+        outputDiv.appendChild(div);
+      });
+    }
+
+    // Handler: Save Score
+    saveBtn.addEventListener('click', () => {
+      const name = studentNameInput.value.trim();
+      const scoreStr = studentScoreInput.value.trim();
+      if (!name || scoreStr === '') {
+        alert('Please enter both name and score');
+        return;
+      }
+      const score = Number(scoreStr);
+      if (isNaN(score)) {
+        alert('Score must be a number');
+        return;
+      }
+
+      const students = getStudents();
+      students.push({ name: name, score: score });
+      saveStudents(students);
+
+      studentNameInput.value = '';
+      studentScoreInput.value = '';
+      renderStudents(students);
+    });
+
+    // Handler: Show All
+    showAllBtn.addEventListener('click', () => {
+      const students = getStudents();
+      renderStudents(students);
+    });
+
+    // Handler: Show Passed (score >= 35)
+    showPassedBtn.addEventListener('click', () => {
+      const students = getStudents();
+      const passed = students.filter(s => s.score >= 35);
+      renderStudents(passed);
+    });
+
+    // Handler: Sort by Score (ascending)
+    sortBtn.addEventListener('click', () => {
+      const students = getStudents();
+      // create a shallow copy to avoid mutating original stored order
+      const sorted = students.slice().sort((a, b) => a.score - b.score);
+      renderStudents(sorted);
+    });
+
+    // Handler: Clear All
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Are you sure to clear all data?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderStudents([]);
+      }
+    });
+
+    // On page load — show all existing students
+    renderStudents(getStudents());
+  </script>
+
+</body>
+</html>
