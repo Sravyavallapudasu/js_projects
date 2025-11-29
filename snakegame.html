@@ -1,0 +1,70 @@
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Snake Mover Game</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+    }
+
+    #gameArea {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      border: 2px solid #333;
+      background-color: #fff;
+      overflow: hidden;
+    }
+
+    #snake {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: green;
+      top: 185px;
+      left: 185px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="gameArea">
+    <div id="snake"></div>
+  </div>
+
+  <script>
+    const snake = document.getElementById('snake');
+    const gameArea = document.getElementById('gameArea');
+    let x = 185;
+    let y = 185;
+    const moveBy = 10;
+
+    document.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowUp':
+          if (y > 0) y -= moveBy;
+          break;
+        case 'ArrowDown':
+          if (y < gameArea.clientHeight - snake.clientHeight) y += moveBy;
+          break;
+        case 'ArrowLeft':
+          if (x > 0) x -= moveBy;
+          break;
+        case 'ArrowRight':
+          if (x < gameArea.clientWidth - snake.clientWidth) x += moveBy;
+          break;
+      }
+
+      snake.style.top = y + 'px';
+      snake.style.left = x + 'px';
+    });
+  </script>
+
+</body>
+</html>
