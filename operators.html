@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Array Manager – Add & Delete Items Dynamically</title>
+</head>
+<body>
+
+  <h1>Array Manager</h1>
+
+  <input type="text" id="itemInput" placeholder="Enter item" />
+  <button id="addBtn">Add</button>
+ 
+
+  <ul id="itemList"></ul>
+
+  <script>
+    
+    const items = [];
+
+    const itemInput = document.getElementById('itemInput');
+    const addBtn = document.getElementById('addBtn');
+    const itemList = document.getElementById('itemList');
+
+   
+    function renderList() {
+      
+      itemList.innerHTML = '';
+
+    
+      items.forEach((item, index) => {
+        const li = document.createElement('li');
+
+        li.textContent = item + ' ';
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.addEventListener('click', () => {
+         
+          items.splice(index, 1);
+       
+          renderList();
+        });
+
+        li.appendChild(delBtn);
+        itemList.appendChild(li);
+      });
+    }
+
+   
+    addBtn.addEventListener('click', () => {
+      const value = itemInput.value.trim();
+      if (value === '') {
+        alert('Please enter a non-empty value');
+        return;
+      }
+
+      
+      if (items.includes(value)) {
+        alert('Item already exists');
+        return;
+      }
+
+      
+      items.push(value);
+     
+      itemInput.value = '';
+     
+      renderList();
+    });
+
+    itemInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        addBtn.click();
+      }
+    });
+  </script>
+
+</body>
+</html>
