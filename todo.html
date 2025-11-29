@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Todo Array Manager</title>
+</head>
+<body>
+
+    <h2>Simple Todo Array Manager</h2>
+
+    <input id="todoInput" type="text" placeholder="Enter todo">
+
+    <br><br>
+
+    <button onclick="addFirst()">Add First</button>
+    <button onclick="addLast()">Add Last</button>
+    <br><br>
+    <button onclick="deleteFirst()">Delete First</button>
+    <button onclick="deleteLast()">Delete Last</button>
+
+    <h3 id="output"></h3>
+
+    <script>
+        // Initial Array
+        let items = ["apple", "banana", "mango"];
+
+        // Show initial
+        show();
+
+        function show() {
+            document.getElementById("output").innerText = items.join(", ");
+        }
+
+        function addFirst() {
+            let value = document.getElementById("todoInput").value;
+            if (value === "") return;
+            items.unshift(value);
+            show();
+        }
+
+        function addLast() {
+            let value = document.getElementById("todoInput").value;
+            if (value === "") return;
+            items.push(value);
+            show();
+        }
+
+        function deleteFirst() {
+            items.shift();
+            show();
+        }
+
+        function deleteLast() {
+            items.pop();
+            show();
+        }
+    </script>
+
+</body>
+</html>
