@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student List</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f2f2;
+      padding: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: blue;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+      width: 300px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button onclick="showStudents()">Show Students</button>
+
+  <div id="output"></div>
+
+<script>
+  // ------------ STUDENT DATA --------------
+  const students = [
+    {
+      name: "lovki",
+      age: 20,
+      marks: 85,
+      skills: ["HTML", "CSS", "JavaScript"],
+      address: { city: "Mumbai", pincode: 400001 }
+    },
+    {
+      name: "Druthi",
+      age: 22,
+      marks: 92,
+      skills: ["Python", "Django"],
+      address: { city: "Delhi", pincode: 110001 }
+    }
+  ];
+
+  // ------------ DISPLAY FUNCTION --------------
+  function showStudents() {
+    let output = document.getElementById("output");
+    output.innerHTML = ""; // clear previous content
+
+    for (let student of students) {
+      let card = `
+        <div class="card">
+          <h3>Name: ${student.name}</h3>
+          <p>Age: ${student.age}</p>
+          <p>Marks: ${student.marks}</p>
+          <p>Skills: ${student.skills.join(", ")}</p>
+          <p>Address: ${student.address.city}, ${student.address.pincode}</p>
+        </div>
+      `;
+      output.innerHTML += card;
+    }
+  }
+</script>
+
+</body>
+</html>
